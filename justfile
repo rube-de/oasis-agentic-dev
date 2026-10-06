@@ -28,3 +28,15 @@ lint-budgets:
 [private]
 lint-skills:
     gh skill publish --dry-run
+
+# Test the sync script against throwaway repos
+test:
+    scripts/test-sync.sh
+
+# Copy the committed baseline into another repo's working tree
+sync target:
+    scripts/sync.sh {{ quote(target) }}
+
+# Run oasis-review on the seeded fixture (claude or codex); read the output
+review-eval agent:
+    tests/review-fixture/run.sh {{ quote(agent) }}

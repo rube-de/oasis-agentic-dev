@@ -80,4 +80,8 @@ This repo is the source of the baseline above, the PR template and the
 *   Skills live in `skills/<name>/` with portable frontmatter only (`name`,
     `description`). Each has committed symlinks at `.agents/skills/<name>`
     (Codex) and `.claude/skills/<name>` (Claude Code).
-*   Run `just lint` before every PR.
+*   `just sync <checkout>` copies the committed baseline into another repo;
+    `scripts/sync.sh` must stay POSIX `sh` with BSD and GNU tools.
+*   Run `just lint` and `just test` before every PR. After changing
+    `oasis-review`, run `just review-eval claude` and `just review-eval
+    codex` and compare the output with `tests/review-fixture/expected.md`.
