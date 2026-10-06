@@ -1,0 +1,19 @@
+# Google docguide: https://google.github.io/styleguide/docguide/style.html
+# markdownlint defaults contradict it on list spacing, so encode it here.
+
+# Three spaces after a bullet, two after a number: content sits at column 4.
+MD030:
+  ul_single: 3
+  ul_multi: 3
+  ol_single: 2
+  ol_multi: 2
+
+MD007:
+  indent: 4
+
+# 80 columns, except where the docguide allows longer lines.
+MD013:
+  line_length: 80
+  code_blocks: false
+  tables: false
+  headings: false
