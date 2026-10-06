@@ -35,9 +35,9 @@ These rules apply to humans and agents alike.
 *   **Commits**: atomic, each builds and passes tests, no do-then-undo
     churn; `git mv` for renames.
 *   **Base**: a PR's parent is the nearest unmerged branch below it in
-    `gh stack view --json` (`branches` runs bottom to top; `base` is a SHA),
-    else its PR base branch, else the repo's default branch. Diff with
-    `git diff <parent>...HEAD`.
+    `gh stack view --json` (`branches` runs bottom to top; `base` is a SHA;
+    an error means no stack), else its PR base branch, else the repo's
+    default branch. Diff with `git diff <parent>...HEAD`.
 *   **Self-review** before requesting review: run the repo checks, run
     `oasis-review` in self mode, fix every Blocking finding. You own the
     code your agent wrote; reviewer time is precious.

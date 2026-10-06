@@ -9,6 +9,13 @@
 set -eu
 
 agent=${1:?usage: run.sh <claude|codex> [output-file]}
+case $agent in
+claude | codex) ;;
+*)
+    echo "unknown agent: $agent (use claude or codex)" >&2
+    exit 1
+    ;;
+esac
 here=$(cd "$(dirname "$0")" && pwd -P)
 root=$(cd "$here/../.." && pwd -P)
 repo=$(mktemp -d)/shop
@@ -53,10 +60,6 @@ claude)
 codex)
     codex exec --cd "$repo" --sandbox read-only --ephemeral \
         --output-last-message "$out" "$prompt" >/dev/null
-    ;;
-*)
-    echo "unknown agent: $agent (use claude or codex)" >&2
-    exit 1
     ;;
 esac
 

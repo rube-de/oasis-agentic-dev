@@ -166,16 +166,39 @@ expect_not grep -q 'old rule' "$f"
 expect grep -qF 'Wrap the baseline in `<!-- oasis-baseline:start -->` markers.' "$f"
 expect grep -qx 'keep me' "$f"
 
-new_target stale-skill
-mkdir -p "$t/.agents/skills/oasis-old" "$t/.agents/skills/other" "$t/.claude/skills"
-echo old >"$t/.agents/skills/oasis-old/SKILL.md"
-echo other >"$t/.agents/skills/other/SKILL.md"
-ln -s ../../.agents/skills/oasis-old "$t/.claude/skills/oasis-old"
+# A repo's own oasis-* skill is never deleted; sync names it instead.
+new_target own-skill
+mkdir -p "$t/.agents/skills/oasis-dev" "$t/.claude/skills"
+echo mine >"$t/.agents/skills/oasis-dev/SKILL.md"
+ln -s ../../.agents/skills/oasis-dev "$t/.claude/skills/oasis-dev"
 commit_all "$t" skills
 expect sync "$t"
-expect_not test -e "$t/.agents/skills/oasis-old"
-expect_not test -L "$t/.claude/skills/oasis-old"
-expect test -f "$t/.agents/skills/other/SKILL.md"
+expect test -f "$t/.agents/skills/oasis-dev/SKILL.md"
+expect test -L "$t/.claude/skills/oasis-dev"
+expect grep -q 'oasis-dev' "$work/stderr"
+
+# One skills directory for both tools: .claude/skills -> ../.agents/skills.
+new_target shared-skills-dir
+mkdir -p "$t/.agents/skills/other" "$t/.claude"
+echo other >"$t/.agents/skills/other/SKILL.md"
+ln -s ../.agents/skills "$t/.claude/skills"
+commit_all "$t" skills
+expect sync "$t"
+expect test -L "$t/.claude/skills"
+for s in $skills; do
+    expect test -d "$t/.agents/skills/$s"
+    expect_not test -L "$t/.agents/skills/$s"
+done
+commit_all "$t" synced
+expect sync "$t"
+expect test -z "$(git -C "$t" status --porcelain)"
+
+new_target foreign-skills-link
+mkdir -p "$t/elsewhere" "$t/.claude"
+ln -s ../elsewhere "$t/.claude/skills"
+echo keep >"$t/elsewhere/keep"
+commit_all "$t" skills
+expect_refusal
 
 new_target old-template
 mkdir -p "$t/.github"
@@ -219,6 +242,12 @@ expect_refusal
 new_target dirty
 echo wip >"$t/wip.txt"
 expect_refusal
+
+# An uncommitted source change would not match the stamped commit.
+new_target dirty-source
+echo "local edit" >>"$src/AGENTS.md"
+expect_refusal
+git -C "$src" checkout -q AGENTS.md
 
 current=self
 t=$src

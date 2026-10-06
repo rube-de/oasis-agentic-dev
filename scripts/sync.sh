@@ -78,11 +78,22 @@ for t in $templates; do
 done
 IFS=$ifs
 
-for link in "$target"/.claude/skills/oasis-*; do
-    if [ -d "$link" ] && [ ! -L "$link" ]; then
-        die "$link is a directory; it must be a symlink into .agents/skills"
-    fi
-done
+# Either .claude/skills links to .agents/skills as a whole, or each skill in it
+# is a symlink into .agents/skills.
+shared=
+if [ -L "$target/.claude/skills" ]; then
+    resolved=$(cd "$target/.claude/skills" 2>/dev/null && pwd -P) || resolved=
+    agents=$(cd "$target/.agents/skills" 2>/dev/null && pwd -P) || agents=
+    [ -n "$resolved" ] && [ "$resolved" = "$agents" ] ||
+        die ".claude/skills is a symlink to somewhere other than .agents/skills"
+    shared=1
+else
+    for link in "$target"/.claude/skills/oasis-*; do
+        if [ -d "$link" ] && [ ! -L "$link" ]; then
+            die "$link is a directory; it must be a symlink into .agents/skills"
+        fi
+    done
+fi
 
 stamp=$(git -C "$src" rev-parse --short=12 HEAD)
 default=$(git -C "$src" symbolic-ref -q --short refs/remotes/origin/HEAD || true)
@@ -155,12 +166,16 @@ for dir in "$src"/skills/oasis-*; do
     name=$(basename "$dir")
     rm -rf "$target/.agents/skills/$name"
     cp -R "$dir" "$target/.agents/skills/$name"
+    [ -z "$shared" ] || continue
     rm -f "$target/.claude/skills/$name"
     ln -s "../../.agents/skills/$name" "$target/.claude/skills/$name"
 done
-for path in "$target"/.agents/skills/oasis-* "$target"/.claude/skills/oasis-*; do
-    [ -e "$path" ] || [ -L "$path" ] || continue
-    [ -d "$src/skills/$(basename "$path")" ] || rm -rf "$path"
+# The repo may own oasis-* skills too, so name leftovers instead of deleting.
+for path in "$target"/.agents/skills/oasis-*; do
+    [ -d "$path" ] || continue
+    name=$(basename "$path")
+    [ -d "$src/skills/$name" ] ||
+        warn "$name is not a baseline skill; if it was one, remove it by hand"
 done
 
 lines=$(wc -l <"$target/AGENTS.md" | tr -d ' ')

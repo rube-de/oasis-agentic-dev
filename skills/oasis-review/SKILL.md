@@ -17,9 +17,8 @@ Every finding names `file:line` and says *why*, in terms of code health.
 
 ## Scope the diff
 
-1.  Resolve the parent with the **Base** rule in `AGENTS.md`. When
-    `gh stack view --json` fails, there is no stack: use the PR base or the
-    default branch (`gh repo view --json defaultBranchRef`).
+1.  Resolve the parent with the **Base** rule in `AGENTS.md`
+    (`gh repo view --json defaultBranchRef` names the default branch).
 2.  Diff with `git diff <parent>...HEAD` (peer mode: `gh pr diff <number>`).
 3.  With `--stack`, repeat for every layer from the bottom up, each against
     its own parent, and report a design flaw on the lowest layer that
