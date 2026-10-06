@@ -243,6 +243,53 @@ new_target dirty
 echo wip >"$t/wip.txt"
 expect_refusal
 
+# Writes never follow a symlink out of the target repo.
+outside=$work/outside
+mkdir -p "$outside/skills/oasis-review"
+echo "precious" >"$outside/file"
+echo "precious" >"$outside/skills/oasis-review/SKILL.md"
+outside_untouched() {
+    test "$(cat "$outside/file")" = precious &&
+        test "$(cat "$outside/skills/oasis-review/SKILL.md")" = precious &&
+        test "$(ls "$outside")" = "file
+skills" &&
+        test "$(ls "$outside/skills")" = oasis-review
+}
+
+new_target agents-md-link
+ln -s ../outside/file "$t/AGENTS.md"
+commit_all "$t" link
+expect_refusal
+expect outside_untouched
+
+new_target github-link
+ln -s ../outside "$t/.github"
+commit_all "$t" link
+expect_refusal
+expect outside_untouched
+
+new_target skills-link
+mkdir -p "$t/.agents"
+ln -s ../../outside/skills "$t/.agents/skills"
+commit_all "$t" link
+expect_refusal
+expect outside_untouched
+
+new_target dangling-claude-md
+ln -s ../outside/new-file "$t/CLAUDE.md"
+commit_all "$t" link
+expect_refusal
+expect_not test -e "$outside/new-file"
+
+# CLAUDE.md as a symlink to AGENTS.md is the other documented shim.
+new_target claude-md-link
+echo "# Demo" >"$t/AGENTS.md"
+ln -s AGENTS.md "$t/CLAUDE.md"
+commit_all "$t" link
+expect sync "$t"
+expect test -L "$t/CLAUDE.md"
+expect same_block "$t/CLAUDE.md"
+
 # An uncommitted source change would not match the stamped commit.
 new_target dirty-source
 echo "local edit" >>"$src/AGENTS.md"

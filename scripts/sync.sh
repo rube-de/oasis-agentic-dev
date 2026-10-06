@@ -59,7 +59,25 @@ if [ -f "$target/AGENTS.md" ]; then
         die "target AGENTS.md has duplicate or misordered oasis-baseline markers"
 fi
 
-if [ -e "$target/CLAUDE.md" ] && [ "$(cat "$target/CLAUDE.md")" != "@AGENTS.md" ]; then
+# Writes must stay inside the target: no file sync writes may be a symlink,
+# and no directory it writes into may resolve outside the repo.
+for f in AGENTS.md "$TEMPLATE"; do
+    [ ! -L "$target/$f" ] || die "$f is a symlink; sync rewrites it in place"
+done
+for d in .github .agents .agents/skills .claude; do
+    [ -e "$target/$d" ] || [ -L "$target/$d" ] || continue
+    real=$(cd "$target/$d" 2>/dev/null && pwd -P) || die "$d is a broken symlink"
+    case $real in
+    "$target"/*) ;;
+    *) die "$d resolves outside the repo ($real)" ;;
+    esac
+done
+
+# CLAUDE.md is either the import line or a symlink to AGENTS.md.
+if [ -L "$target/CLAUDE.md" ]; then
+    [ "$target/CLAUDE.md" -ef "$target/AGENTS.md" ] ||
+        die "CLAUDE.md is a symlink to something other than AGENTS.md"
+elif [ -e "$target/CLAUDE.md" ] && [ "$(cat "$target/CLAUDE.md")" != "@AGENTS.md" ]; then
     die "target CLAUDE.md has its own content; move it into AGENTS.md and" \
         "leave CLAUDE.md as the single line @AGENTS.md"
 fi
