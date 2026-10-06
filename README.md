@@ -58,3 +58,7 @@ In development. Piloted in `honoroll-io/honoroll`, then moved to the
 
 Maintained by [rube-de](https://github.com/rube-de). Open an issue for
 questions and proposals.
+
+## License
+
+Copyright 2026 rube-de. Licensed under the [Apache License 2.0](LICENSE).

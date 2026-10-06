@@ -1,6 +1,7 @@
 ---
 name: oasis-pr-description
 description: Write or update a pull request title and body from the repo's PR template. Use when opening a PR, after pushing new commits to one, or before merge to confirm the body still matches the change. Stack-aware (gh stack).
+license: Apache-2.0
 ---
 
 # Oasis PR description

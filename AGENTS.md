@@ -78,8 +78,8 @@ This repo is the source of the baseline above, the PR template and the
     Keep it at most 80 lines and this file at most 200.
 *   `.github/pull_request_template.md` is the canonical PR template.
 *   Skills live in `skills/<name>/` with portable frontmatter only (`name`,
-    `description`). Each has committed symlinks at `.agents/skills/<name>`
-    (Codex) and `.claude/skills/<name>` (Claude Code).
+    `description`, `license`). Each has committed symlinks at
+    `.agents/skills/<name>` (Codex) and `.claude/skills/<name>` (Claude Code).
 *   `just sync <checkout>` copies the committed baseline into another repo;
     `scripts/sync.sh` must stay POSIX `sh` with BSD and GNU tools.
 *   Run `just lint` and `just test` before every PR. After changing

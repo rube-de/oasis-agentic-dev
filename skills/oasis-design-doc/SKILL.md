@@ -1,6 +1,7 @@
 ---
 name: oasis-design-doc
 description: Write or refine a design doc in docs/design/ before implementing a change that meets the design-doc trigger in AGENTS.md (new component, public API or abstraction; persistent, on-chain, wire or config format change; security-sensitive; more than about 3 PRs; competing approaches).
+license: Apache-2.0
 ---
 
 # Oasis design doc

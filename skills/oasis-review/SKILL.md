@@ -1,6 +1,7 @@
 ---
 name: oasis-review
 description: Review code against the org engineering standards. Self mode reviews your own diff before you open or update a PR and fixes Blocking findings; peer mode reviews someone else's PR by number and drafts comments. Stack-aware (gh stack).
+license: Apache-2.0
 ---
 
 # Oasis review
