@@ -77,4 +77,7 @@ This repo is the source of the baseline above, the PR template and the
 *   The block between the markers in this file is the canonical baseline.
     Keep it at most 80 lines and this file at most 200.
 *   `.github/pull_request_template.md` is the canonical PR template.
+*   Skills live in `skills/<name>/` with portable frontmatter only (`name`,
+    `description`). Each has committed symlinks at `.agents/skills/<name>`
+    (Codex) and `.claude/skills/<name>` (Claude Code).
 *   Run `just lint` before every PR.

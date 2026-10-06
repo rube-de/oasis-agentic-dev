@@ -4,8 +4,8 @@ set shell := ["sh", "-eu", "-c"]
 default:
     @just --list
 
-# Lint Markdown and check the AGENTS.md line budgets
-lint: lint-markdown lint-budgets
+# Lint Markdown, the AGENTS.md line budgets and the skills
+lint: lint-markdown lint-budgets lint-skills
 
 [private]
 lint-markdown:
@@ -21,3 +21,10 @@ lint-budgets:
     echo "baseline block: $block/80 lines, AGENTS.md: $total/200 lines"
     test "$block" -gt 0 || { echo "baseline block not found" >&2; exit 1; }
     test "$block" -le 80 && test "$total" -le 200
+
+# Validate skills against the Agent Skills spec. Fails only on a non-zero
+# exit: the warnings about .agents/skills and .claude/skills are expected,
+# they hold this repo's own dogfood symlinks (see README).
+[private]
+lint-skills:
+    gh skill publish --dry-run
