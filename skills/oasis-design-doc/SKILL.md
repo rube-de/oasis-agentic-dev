@@ -22,8 +22,9 @@ out the decisions, and keep the doc short.
         prerequisites are settled, numbered, each with your recommended
         answer and the reason. Wait for answers, then ask the next round.
     *   Ask only for decisions. Look facts up instead of asking for them.
-    *   Take Motivation and Requirements from the author; draft them back in
-        their substance, never invented.
+    *   The first round asks the author why the change is needed and why
+        now, unless they already said. Motivation and Requirements come
+        from the author; draft them back in their substance, never invented.
     *   Stress-test with concrete edge-case scenarios, check the author's
         claims against the code and say so when they disagree, and replace
         fuzzy terms with precise ones.
