@@ -120,8 +120,12 @@ next to them. A second run produces no diff.
     and teammates without the setup get nothing.
 *   **Git submodule.** Fresh clones miss it, and symlinks across submodules
     are fragile.
-*   **Reusing matt-pocock's `pr` and `code-review` skills.** Good ideas, now
-    adapted, but they depend on a personal setup step and a glossary.
+*   **Reusing matt-pocock's `pr` and `code-review` skills.** MIT-licensed and
+    vendorable, and their best ideas are adapted here, but they follow a
+    different review model than Google's (a Summary, Evidence and Merge
+    Danger template; a two-axis Standards and Spec review built on Fowler
+    smells), need extra per-repo scaffolding (`docs/agents/`, triage labels,
+    a glossary), and would add a third-party update stream to every repo.
 
 ## Implementation plan
 
