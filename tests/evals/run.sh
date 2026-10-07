@@ -58,14 +58,18 @@ oasis-design-doc)
     ;;
 esac
 
+# Read-only in both agents. dontAsk denies every tool not listed, so Claude
+# Code cannot edit the fixture or write plan files into ~/.claude/plans.
+# Codex can answer across several messages, so keep its whole transcript.
 case $agent in
 claude)
-    (cd "$repo" && claude -p "$prompt" --permission-mode plan \
+    (cd "$repo" && claude -p "$prompt" --permission-mode dontAsk \
         --allowedTools "Bash(git:*)" Read Grep Glob Skill) >"$out"
     ;;
 codex)
     codex exec --cd "$repo" --sandbox read-only --ephemeral \
-        --output-last-message "$out" "$prompt" >/dev/null
+        --output-last-message "$out" "$prompt" >/dev/null 2>"$out.log"
+    echo "transcript:   $out.log"
     ;;
 esac
 
