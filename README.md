@@ -15,8 +15,8 @@ Codex alike.
     *   `oasis-review`: self-review before a PR, peer review of others' PRs.
     *   `oasis-pr-description`: PR title and body from the template.
 *   `scripts/sync.sh`: copies all of the above into another repo.
-*   `tests/review-fixture/`: a seeded diff for checking `oasis-review` in
-    Claude Code and Codex.
+*   `tests/evals/`: evals that run `oasis-review` in
+    Claude Code or Codex against a small fixture repo.
 *   `docs/design/`: design docs, starting with
     [the baseline's own design](docs/design/0001-agentic-baseline.md).
 

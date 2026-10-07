@@ -133,8 +133,8 @@ one PR with logical commits:
 1.  `oasis-review` with its checklist.
 1.  `oasis-pr-description`.
 1.  `oasis-design-doc`.
-1.  `scripts/sync.sh` with tests, and a seeded review fixture that runs
-    `oasis-review` through the synced baseline in Claude Code or Codex.
+1.  `scripts/sync.sh` with tests, and evals that run the skills through the
+    synced baseline in Claude Code or Codex.
 
 Then a pilot in `honoroll-io/honoroll`: one PR that syncs the baseline and
 trims its 221-line `AGENTS.md` to at most 200 lines by deleting the generic

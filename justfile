@@ -37,6 +37,6 @@ test:
 sync target:
     scripts/sync.sh {{ quote(target) }}
 
-# Run oasis-review on the seeded fixture (claude or codex); read the output
-review-eval agent:
-    tests/review-fixture/run.sh {{ quote(agent) }}
+# Run a skill eval (oasis-review) in claude or codex
+eval skill agent:
+    tests/evals/run.sh {{ quote(skill) }} {{ quote(agent) }}

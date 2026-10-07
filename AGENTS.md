@@ -82,6 +82,6 @@ This repo is the source of the baseline above, the PR template and the
     `.agents/skills/<name>` (Codex) and `.claude/skills/<name>` (Claude Code).
 *   `just sync <checkout>` copies the committed baseline into another repo;
     `scripts/sync.sh` must stay POSIX `sh` with BSD and GNU tools.
-*   Run `just lint` and `just test` before every PR. After changing
-    `oasis-review`, run `just review-eval claude` and `just review-eval
-    codex` and compare the output with `tests/review-fixture/expected.md`.
+*   Run `just lint` and `just test` before every PR. After changing a skill
+    with an eval, run `just eval <skill> claude` and `just eval <skill>
+    codex` and compare the output with `tests/evals/<skill>/expected.md`.
