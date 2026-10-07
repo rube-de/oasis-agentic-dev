@@ -37,6 +37,6 @@ test:
 sync target:
     scripts/sync.sh {{ quote(target) }}
 
-# Run a skill eval (oasis-review) in claude or codex
+# Run a skill eval (oasis-review, oasis-design-doc) in claude or codex
 eval skill agent:
     tests/evals/run.sh {{ quote(skill) }} {{ quote(agent) }}

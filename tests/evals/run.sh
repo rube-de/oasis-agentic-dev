@@ -8,10 +8,10 @@
 # by grepping. Sync copies the committed baseline, so commit changes first.
 set -eu
 
-usage="usage: run.sh <oasis-review> <claude|codex> [output-file]"
+usage="usage: run.sh <oasis-review|oasis-design-doc> <claude|codex> [output-file]"
 skill=${1:?$usage}
 agent=${2:?$usage}
-case $skill in oasis-review) ;; *) echo "$usage" >&2; exit 1 ;; esac
+case $skill in oasis-review | oasis-design-doc) ;; *) echo "$usage" >&2; exit 1 ;; esac
 case $agent in claude | codex) ;; *) echo "$usage" >&2; exit 1 ;; esac
 here=$(cd "$(dirname "$0")" && pwd -P)
 root=$(cd "$here/../.." && pwd -P)
@@ -51,6 +51,10 @@ oasis-review)
     } >"$repo/regions.py"
     commit_all "Add discounts and regional tax rates"
     prompt="Use the oasis-review skill in self mode on this branch; its parent is main. Report the findings, then stop: do not edit any file."
+    ;;
+oasis-design-doc)
+    # A request that meets the design-doc trigger and leaves out the why.
+    prompt="Use the oasis-design-doc skill. We want customers to be able to enter a discount code at checkout."
     ;;
 esac
 
