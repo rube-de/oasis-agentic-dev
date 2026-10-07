@@ -43,10 +43,15 @@ and no Blocking finding remains.
 
 ## Peer mode
 
+Run it in a fresh session, never the author's: its value is a reader without
+the author's context, who catches what self-review in that context missed.
+
 1.  Read the PR with `gh pr view <number>` and the diff. Read lower stack
     layers for context only; comment on this layer's diff.
-2.  Broad view: if the change should not happen at all, stop and draft one
-    courteous comment that says why and what to do instead.
+2.  Broad view: does the description explain the why to a reader with only
+    the PR in front of them? If not, that is a finding. If the change should
+    not happen at all, stop and draft one courteous comment that says why and
+    what to do instead.
 3.  Review the main part's design first, then the rest of the files, using
     [checklist.md](checklist.md) and the repo's `AGENTS.md`.
 4.  Draft comments about the code, never the author. Unlabelled means
