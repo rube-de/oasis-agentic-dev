@@ -15,8 +15,11 @@ out the decisions, and keep the doc short.
 1.  **Open the doc.** Continue an existing `docs/design/NNNN-slug.md`, or copy
     [template.md](template.md) to the next free number with `Status: Draft`.
 2.  **Gather facts yourself.** Read the code, docs, issues and earlier design
-    docs the change touches. Done when every claim the doc will rely on has a
-    source you have read.
+    docs the change touches, and search the web for competitors and
+    production-grade open-source solutions to the same problem. Done when
+    every claim the doc will rely on has a source you have read, and every
+    Related work entry links to it. Without web access, ask the author which
+    projects to compare and note in the doc that the survey is pending.
 3.  **Grill the author** in rounds until the design is settled:
     *   Map the open decisions as a tree. Each round, ask every decision whose
         prerequisites are settled, numbered, each with your recommended
@@ -25,6 +28,9 @@ out the decisions, and keep the doc short.
     *   The first round asks the author why the change is needed and why
         now, unless they already said. Motivation and Requirements come
         from the author; draft them back in their substance, never invented.
+    *   Non-functional targets and the privacy level are decisions: ask for
+        each with a recommended value. Current latency and load are facts:
+        measure or look them up.
     *   Stress-test with concrete edge-case scenarios, check the author's
         claims against the code and say so when they disagree, and replace
         fuzzy terms with precise ones.

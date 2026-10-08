@@ -12,12 +12,29 @@ The problem and why it matters now, from the user's or developer's side.
 
 ### Functional requirements
 
-*   What the solution must do.
+*   What must be observably true when the feature works, one checkable
+    behaviour per bullet; each maps to a test in the Implementation plan.
 
 ### Non-functional requirements
 
-*   Performance, security, cost, compatibility, operability; "n/a" with a
-    reason if none apply.
+Give each a target the author sets and, where it can be estimated, a
+prediction with its basis (benchmark, measurement or stated assumption).
+"n/a" with a reason for any that does not apply.
+
+*   **Latency and throughput**: per operation, e.g. p95.
+*   **Privacy**: what data is visible to whom: public on-chain, confidential
+    in a TEE, the operator, third parties.
+*   **Infrastructure**: the minimum needed to run it (services, nodes,
+    hardware, cost).
+*   **Scaling**: expected load at launch and at 10x; what breaks first.
+*   **Security, compatibility, operability** where they apply.
+
+## Related work
+
+*   **[Project](link)**: how this competitor or production-grade open-source
+    solution handles the problem and what we take from it; why we do not
+    adopt it whole goes under Alternatives considered. "n/a" with a reason
+    when nothing comparable exists.
 
 ## Challenges
 
@@ -30,7 +47,8 @@ data formats and failure modes over implementation detail.
 
 ## Alternatives considered
 
-*   **Alternative**: what it is and why it lost.
+*   **Alternative**: a design we weighed, including adopting a project from
+    Related work, and why it lost.
 
 ## Implementation plan
 

@@ -15,3 +15,8 @@ interview. Wording varies between runs and agents; compare by reading.
 4.  **Facts come from the code.** The questions build on what the repo
     shows (`total()` sums integer cents in `pricing.py`) and do not ask for
     anything the repo already answers.
+5.  **Related work only from sources read.** It states nothing about a
+    competitor or open-source project as fact without a source it read in
+    this run; names from memory are labelled unverified. Claude Code cannot
+    search the web here, so it asks the author which projects to compare.
+    Codex can, so it may link what it read instead.
