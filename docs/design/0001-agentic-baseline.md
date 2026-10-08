@@ -41,6 +41,40 @@ implementation, and author self-review before anyone else's time is spent.
 *   Committed with the code, so cloud and CI agents see the same rules.
 *   No dependency on personal plugins or tools beyond `git`, `gh` and a POSIX
     shell.
+*   Scaling: one manual `just sync` per repo suits the pilot and the first
+    few repos; at 10x repos the manual runs break first, which is why
+    pull-based sync is a tracked follow-up.
+*   Latency: n/a; nothing runs at request time.
+*   Privacy: sync copies files between local checkouts with no service in
+    between. What agents send to their provider is part of the provider
+    decision, outside this repo.
+
+## Related work
+
+*   **[AGENTS.md](https://agents.md)**: the open format for agent
+    instructions. Codex reads it natively, Claude Code through an `@`
+    import. It has no inheritance across repos; we take the file as the home
+    of the baseline.
+*   **[mattpocock/skills](https://github.com/mattpocock/skills)**: an
+    MIT-licensed skill set with `pr`, `code-review`, `grilling` and
+    `writing-for-agents`. We take its interview in rounds with a recommended
+    answer per question, its guide to PR visuals, and its rules for writing
+    instructions agents follow.
+*   **[`npx skills`](https://github.com/vercel-labs/skills) and
+    [`gh skill`](https://cli.github.com/manual/gh_skill)**: install skills
+    from a Git repo into `.agents/skills/` or `.claude/skills/`. We keep this
+    repo installable by both for individuals.
+*   **[Ruler](https://github.com/intellectronica/ruler) and
+    [rulesync](https://github.com/dyoshikawa/rulesync)**: MIT-licensed Node
+    CLIs that keep rules, skills and MCP config in one source directory and
+    generate each agent's files from it. rulesync can also install rules and
+    skills from other Git repos, pinned in a lockfile, and report sources
+    that fall behind (`rulesync install --outdated`). Its lockfile and
+    staleness check are worth weighing for pull-based sync.
+*   **[agents-md-sync](https://github.com/trick77/agents-md-sync)**: the
+    closest design to ours, with little adoption so far. A Node CLI composes
+    each repo's `AGENTS.md` from central fragments plus repo addenda in
+    `.agents/`, commits to a branch and opens a PR. We take nothing from it.
 
 ## Challenges
 
@@ -82,8 +116,9 @@ docguide, and the proven generic rules of `honoroll-io/honoroll`'s
 
 *   **`oasis-design-doc`** interviews the author in rounds (open decisions
     first, a recommended answer for each, facts looked up rather than asked),
-    then drafts Motivation, Requirements, Challenges, Solution, Alternatives
-    considered and an Implementation plan whose steps are stack layers.
+    then drafts Motivation, Requirements, Related work, Challenges, Solution,
+    Alternatives considered and an Implementation plan whose steps are stack
+    layers.
 *   **`oasis-review`** applies Google's *What to look for* checklist, the
     repo's `AGENTS.md` and the design doc. Self mode runs before your own PR
     and fixes Blocking findings; peer mode drafts comments on someone else's
@@ -114,18 +149,23 @@ next to them. A second run produces no diff.
     cloud and CI agents.
 *   **`npx skills` or `gh skill install`.** Both produce the right skills
     layout, but neither delivers `AGENTS.md` or the PR template, and a second
-    channel means two update paths. The repo stays installable by both for
-    individuals.
+    channel means two update paths.
+*   **A generator such as Ruler, rulesync or agents-md-sync.** Each adds a
+    Node toolchain and a source format besides `AGENTS.md`. A file per agent
+    buys nothing when both supported agents read `AGENTS.md`, and Ruler
+    gitignores its output by default, so a cloud agent that does not run it
+    gets no rules. agents-md-sync makes the whole `AGENTS.md` tool-owned and
+    moves repo rules into fragments.
 *   **Per-developer global instructions.** Nothing committed, so cloud agents
     and teammates without the setup get nothing.
 *   **Git submodule.** Fresh clones miss it, and symlinks across submodules
     are fragile.
-*   **Reusing matt-pocock's `pr` and `code-review` skills.** MIT-licensed and
-    vendorable, and their best ideas are adapted here, but they follow a
-    different review model than Google's (a Summary, Evidence and Merge
-    Danger template; a two-axis Standards and Spec review built on Fowler
-    smells), need extra per-repo scaffolding (`docs/agents/`, triage labels,
-    a glossary), and would add a third-party update stream to every repo.
+*   **Reusing matt-pocock's `pr` and `code-review` skills.** Vendorable under
+    MIT, but they follow a different review model than Google's (a Summary,
+    Evidence and Merge Danger template; a two-axis Standards and Spec review
+    built on Fowler smells), need extra per-repo scaffolding (`docs/agents/`,
+    triage labels, a glossary), and would add a third-party update stream to
+    every repo.
 
 ## Implementation plan
 
